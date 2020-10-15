@@ -6,6 +6,7 @@ cnx = mysql.connector.connect(user='user1',
                               host='127.0.0.1',
                               database='RVH')
 cursor = cnx.cursor()
+cursor_row_count = cnx.cursor()
 
 window = Tk()
 window.title("Patient Lookup")
@@ -76,6 +77,11 @@ Label(Treatment_frame, width=15, text='___________________').grid(row=1,
 errorMsg = Label(window, text='', foreground='red')
 errorMsg.grid(row=0, column=3)
 
+# get the number of patients by fetching all
+cursor_row_count.execute('SELECT * FROM RVH.Patients')
+cursor_row_count.fetchall()
+max_row = cursor_row_count.rowcount
+
 
 def searchPatient():
 
@@ -96,6 +102,11 @@ def searchPatient():
         errorMsg.config(text='Not an integer!')
         return
 
+    # check bounds
+    # note: this makes sense because the pid was auto incremented
+    if int(pid) > max_row or int(pid) < 1:
+        errorMsg.config(text='Out of bound! Max is ' + str(max_row))
+
     query = (
         """SELECT pid, Patients.name AS Patient_Name, Care_centres.name AS Care_Centre_Name, 
                 Nurses.name AS Nurse_in_Charge_Name, tid, treatment_name, physician_id, Date
@@ -108,8 +119,6 @@ def searchPatient():
     cursor.execute(query)
 
     row_num = 0
-
-    print(cursor.rowcount)
 
     for row in cursor:
         row_num += 1
