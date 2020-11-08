@@ -1,5 +1,5 @@
 # tkinter-mysql-form
-A form built in Tkinter that connects with the MySQL server. The db account was only granted the SELECT priviledge. 
+A form built in Python Tkinter that connects with the MySQL server. The db account was only granted the SELECT priviledge. All data are mock data. 
 
 ![demo](https://user-images.githubusercontent.com/39619599/96099444-3fedba80-0ea1-11eb-92c0-747e8adb93de.gif)
 
